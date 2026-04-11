@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Testable Todo Item Card | Modern Task Manager</title>
+  <title>Testable Todo Item Card</title>
   <style>
     /* ========== RESET & GLOBAL ========== */
     * {
@@ -47,6 +48,7 @@
         padding: 1.25rem;
         border-radius: 28px;
       }
+
       body {
         padding: 1rem;
       }
@@ -113,7 +115,7 @@
       font-size: 0.8rem;
       font-weight: 600;
       letter-spacing: 0.3px;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02), 0 1px 2px rgba(0,0,0,0.05);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
     .priority-high {
@@ -121,11 +123,13 @@
       color: #bc2c1e;
       border-left: 3px solid #e03a1c;
     }
+
     .priority-medium {
       background: #fff0db;
       color: #c96f0e;
       border-left: 3px solid #f4a261;
     }
+
     .priority-low {
       background: #e6f4ea;
       color: #2b6e3c;
@@ -315,289 +319,235 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
       .action-buttons {
         justify-content: stretch;
       }
+
       button {
         flex: 1;
         justify-content: center;
       }
+
       .todo-title {
         font-size: 1.4rem;
       }
     }
   </style>
 </head>
+
 <body>
-<div class="demo-container">
-  <!-- 
-    ROOT CARD: article with role region & required data-testid 
-    Using role="region" and aria-label for context.
-  -->
-  <article class="todo-card" data-testid="test-todo-card" role="region" aria-label="Todo task card">
-    <!-- header: title + priority badge -->
-    <div class="card-header">
-      <div class="title-wrapper">
-        <h2 class="todo-title" id="todo-title-text" data-testid="test-todo-title">Design System Research</h2>
+  <div class="demo-container">
+
+    <article class="todo-card" data-testid="test-todo-card" role="region" aria-label="Todo task card">
+      <!-- header: title + priority badge -->
+      <div class="card-header">
+        <div class="title-wrapper">
+          <h2 class="todo-title" id="todo-title-text" data-testid="test-todo-title">Design System Research</h2>
+        </div>
+        <div data-testid="test-todo-priority" class="priority-badge priority-medium" id="priorityBadge"
+          aria-label="Priority level: Medium">
+          <span> Medium</span>
+        </div>
       </div>
-      <div data-testid="test-todo-priority" class="priority-badge priority-medium" id="priorityBadge" aria-label="Priority level: Medium">
-        <span></span> Medium</span>
+
+      <!-- Description paragraph -->
+      <p class="todo-description" data-testid="test-todo-description">
+        Analyze component libraries, gather accessibility insights, and prepare draft for the new design tokens.
+      </p>
+
+      <!-- Due date & time remaining & status row -->
+      <div class="meta-grid">
+        <div class="due-block">
+          <span class="due-label">Due:</span>
+          <!-- time element with datetime attribute -->
+          <time datetime="2026-03-01T18:00:00+00:00" data-testid="test-todo-due-date" id="dueDateElem">March 1, 2026,
+            6:00 PM UTC</time>
+        </div>
+        <div>
+          <span class="status-badge" id="statusBadge" data-testid="test-todo-status"> In Progress</span>
+        </div>
+        <div>
+          <!-- time remaining container with live polite announcement (optional live region) -->
+          <span class="time-remaining-box" id="timeRemainingBox" data-testid="test-todo-time-remaining"
+            aria-live="polite">
+            Calculating...
+          </span>
+        </div>
       </div>
-    </div>
 
-    <!-- Description paragraph -->
-    <p class="todo-description" data-testid="test-todo-description">
-      Analyze component libraries, gather accessibility insights, and prepare draft for the new design tokens.
-    </p>
-
-    <!-- Due date & time remaining & status row -->
-    <div class="meta-grid">
-      <div class="due-block">
-        <span class="due-label"> Due:</span>
-        <!-- time element with datetime attribute -->
-        <time datetime="2026-03-01T18:00:00+00:00" data-testid="test-todo-due-date" id="dueDateElem">March 1, 2026, 6:00 PM UTC</time>
+      <!-- Tags / categories list (chips) -->
+      <div class="tags-section">
+        <div class="tags-title" id="tagsLabel">Categories & Tags</div>
+        <ul class="tag-list" role="list" aria-labelledby="tagsLabel" data-testid="test-todo-tags">
+          <li class="tag-chip" data-testid="test-todo-tag-work"> Work</li>
+          <li class="tag-chip" data-testid="test-todo-tag-urgent"> Urgent</li>
+          <li class="tag-chip"> Design</li>
+        </ul>
       </div>
-      <div>
-        <span class="status-badge" id="statusBadge" data-testid="test-todo-status"> In Progress</span>
+
+      <!-- Checkbox for completion toggle -->
+      <div class="checkbox-row">
+        <label class="checkbox-label" for="completeToggle">
+          <input type="checkbox" id="completeToggle" data-testid="test-todo-complete-toggle"
+            aria-describedby="todo-title-text" />
+          <span>Mark as completed</span>
+        </label>
       </div>
-      <div>
-        <!-- time remaining container with live polite announcement (optional live region) -->
-        <span class="time-remaining-box" id="timeRemainingBox" data-testid="test-todo-time-remaining" aria-live="polite">
-           Calculating...
-        </span>
+
+      <!-- Edit & Delete Buttons -->
+      <div class="action-buttons">
+        <button class="edit-btn" data-testid="test-todo-edit-button" aria-label="Edit task"> Edit</button>
+        <button class="delete-btn" data-testid="test-todo-delete-button" aria-label="Delete task"> Delete</button>
       </div>
-    </div>
+    </article>
+  </div>
 
-    <!-- Tags / categories list (chips) -->
-    <div class="tags-section">
-      <div class="tags-title" id="tagsLabel">Categories & Tags</div>
-      <ul class="tag-list" role="list" aria-labelledby="tagsLabel" data-testid="test-todo-tags">
-        <li class="tag-chip" data-testid="test-todo-tag-work"> Work</li>
-        <li class="tag-chip" data-testid="test-todo-tag-urgent"> Urgent</li>
-        <li class="tag-chip"> Design</li>
-      </ul>
-    </div>
+  <script>
+    (function () {
 
-    <!-- Checkbox for completion toggle -->
-    <div class="checkbox-row">
-      <label class="checkbox-label" for="completeToggle">
-        <input type="checkbox" id="completeToggle" data-testid="test-todo-complete-toggle" aria-describedby="todo-title-text" />
-        <span>Mark as completed</span>
-      </label>
-    </div>
+      const DUE_DATE_ISO = "2026-03-01T18:00:00Z";
+      const dueDateUTC = new Date(DUE_DATE_ISO);
 
-    <!-- Edit & Delete Buttons -->
-    <div class="action-buttons">
-      <button class="edit-btn" data-testid="test-todo-edit-button" aria-label="Edit task">Edit</button>
-      <button class="delete-btn" data-testid="test-todo-delete-button" aria-label="Delete task"> Delete</button>
-    </div>
-  </article>
-</div>
+      const dueDateElem = document.getElementById('dueDateElem');
+      const timeRemainingSpan = document.getElementById('timeRemainingBox');
+      const statusBadge = document.getElementById('statusBadge');
+      const todoTitleElem = document.querySelector('[data-testid="test-todo-title"]');
+      const priorityBadge = document.getElementById('priorityBadge');
+      const completeCheckbox = document.getElementById('completeToggle');
 
-<script>
-  (function() {
-    // ----- FIXED DUE DATE: March 1, 2026 18:00 UTC (example due date)
-    // Using UTC to avoid timezone shifting; for readable formatting we show local but compute diff based on UTC.
-    // But for consistent remaining logic we compare due UTC timestamp vs current local time (actual difference).
-    const DUE_DATE_ISO = "2026-03-01T18:00:00Z"; // UTC
-    const dueDateUTC = new Date(DUE_DATE_ISO);
 
-    // DOM elements
-    const dueDateElem = document.getElementById('dueDateElem');
-    const timeRemainingSpan = document.getElementById('timeRemainingBox');
-    const statusBadge = document.getElementById('statusBadge');
-    const todoTitleElem = document.querySelector('[data-testid="test-todo-title"]');
-    const priorityBadge = document.getElementById('priorityBadge');
-    const completeCheckbox = document.getElementById('completeToggle');
+      function formatDueDate() {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+        return dueDateUTC.toLocaleDateString(undefined, options);
+      }
 
-    // Helper: format due date nicely (local format)
-    function formatDueDate() {
-      // show in user's locale but with readable format
-      const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
-      return dueDateUTC.toLocaleDateString(undefined, options);
-    }
+      function computeTimeRemaining() {
+        const now = new Date();
+        const due = new Date(dueDateUTC);
+        const diffMs = due - now;
+        const isOverdue = diffMs < 0;
+        const absDiff = Math.abs(diffMs);
 
-    // Compute time remaining text relative to now
-    function computeTimeRemaining() {
-      const now = new Date();
-      const due = new Date(dueDateUTC);
-      const diffMs = due - now;
-      const isOverdue = diffMs < 0;
-      const absDiff = Math.abs(diffMs);
-      
-      const seconds = Math.floor(absDiff / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      const days = Math.floor(hours / 24);
-      const remainingHours = hours % 24;
-      const remainingMinutes = minutes % 60;
-      
-      if (isOverdue) {
-        if (days > 0) {
-          return `Overdue by ${days} day${days !== 1 ? 's' : ''}`;
-        } else if (hours > 0) {
-          return `Overdue by ${hours} hour${hours !== 1 ? 's' : ''}`;
-        } else if (minutes > 0) {
-          return `Overdue by ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        const seconds = Math.floor(absDiff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+        const remainingHours = hours % 24;
+        const remainingMinutes = minutes % 60;
+
+        if (isOverdue) {
+          if (days > 0) {
+            return `Overdue by ${days} day${days !== 1 ? 's' : ''}`;
+          } else if (hours > 0) {
+            return `Overdue by ${hours} hour${hours !== 1 ? 's' : ''}`;
+          } else if (minutes > 0) {
+            return `Overdue by ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+          } else {
+            return `Overdue just now`;
+          }
         } else {
-          return `Overdue just now`;
-        }
-      } else {
-        // Not overdue
-        if (days > 2) {
-          return `Due in ${days} days`;
-        } else if (days === 2) {
-          return `Due in 2 days`;
-        } else if (days === 1) {
-          return `Due tomorrow`;
-        } else if (hours >= 1) {
-          return `Due in ${hours} hour${hours !== 1 ? 's' : ''}`;
-        } else if (minutes >= 1) {
-          return `Due in ${minutes} minute${minutes !== 1 ? 's' : ''}`;
-        } else {
-          return `Due now!`;
+          if (days > 2) {
+            return `Due in ${days} days`;
+          } else if (days === 2) {
+            return `Due in 2 days`;
+          } else if (days === 1) {
+            return `Due tomorrow`;
+          } else if (hours >= 1) {
+            return `Due in ${hours} hour${hours !== 1 ? 's' : ''}`;
+          } else if (minutes >= 1) {
+            return `Due in ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+          } else {
+            return `Due now!`;
+          }
         }
       }
-    }
 
-    // Update the time remaining element and also affect status if completed? Not directly.
-    function updateTimeRemainingDisplay() {
-      if (timeRemainingSpan) {
-        const remainingText = computeTimeRemaining();
-        timeRemainingSpan.textContent = `🕒 ${remainingText}`;
-      }
-    }
-
-    // initial due date formatting
-    function setDueDateText() {
-      if (dueDateElem) {
-        dueDateElem.textContent = formatDueDate();
-      }
-    }
-
-    // ---- Checkbox toggle behaviour: strike-through title, change status to "Done" / revert to "In Progress"
-    function updateCardCompletion(isChecked) {
-      // update title strikethrough style
-      if (todoTitleElem) {
-        if (isChecked) {
-          todoTitleElem.classList.add('completed-title');
-        } else {
-          todoTitleElem.classList.remove('completed-title');
+      function updateTimeRemainingDisplay() {
+        if (timeRemainingSpan) {
+          const remainingText = computeTimeRemaining();
+          timeRemainingSpan.textContent = ` ${remainingText}`;
         }
       }
-      // update status badge text & data-testid preserved
-      if (statusBadge) {
-        if (isChecked) {
-          statusBadge.innerHTML = '✅ Done';
-          statusBadge.classList.add('status-done');
-          // keep original status class but style ok
-        } else {
-          statusBadge.innerHTML = '⏳ In Progress';
-          statusBadge.classList.remove('status-done');
+
+
+      function setDueDateText() {
+        if (dueDateElem) {
+          dueDateElem.textContent = formatDueDate();
         }
       }
-      // optional: add visual cross-fade effect, but exactly matches requirement.
-      // also could announce live but not needed.
-    }
 
-    // handle checkbox toggle event
-    function onCheckboxToggle(e) {
-      const isCompleted = completeCheckbox.checked;
-      updateCardCompletion(isCompleted);
-    }
+      function updateCardCompletion(isChecked) {
 
-    // ---- Edit / Delete dummy actions (console + alert)
-    const editBtn = document.querySelector('[data-testid="test-todo-edit-button"]');
-    const deleteBtn = document.querySelector('[data-testid="test-todo-delete-button"]');
+        if (todoTitleElem) {
+          if (isChecked) {
+            todoTitleElem.classList.add('completed-title');
+          } else {
+            todoTitleElem.classList.remove('completed-title');
+          }
+        }
+        if (statusBadge) {
+          if (isChecked) {
+            statusBadge.innerHTML = ' Done';
+            statusBadge.classList.add('status-done');
+          } else {
+            statusBadge.innerHTML = ' In Progress';
+            statusBadge.classList.remove('status-done');
+          }
+        }
 
-    if (editBtn) {
-      editBtn.addEventListener('click', () => {
-        console.log("edit clicked — would open edit modal for todo item");
-        alert("✏️ Edit action: In real app you could modify title, description, priority etc.");
-      });
-    }
-    if (deleteBtn) {
-      deleteBtn.addEventListener('click', () => {
-        console.log("delete clicked — remove card");
-        alert("🗑️ Delete clicked: This would remove the todo card (demo confirmation).");
-      });
-    }
+      }
 
-    // initial render of due date & time remaining
-    setDueDateText();
-    updateTimeRemainingDisplay();
-    
-    // set initial checkbox state to false (not completed)
-    completeCheckbox.checked = false;
-    updateCardCompletion(false);
-    
-    // attach event listener
-    completeCheckbox.addEventListener('change', onCheckboxToggle);
-    
-    // ---- Auto-refresh time remaining every 30-60 seconds (requirement says updates roughly every 30-60 seconds)
-    // We'll use setInterval 45 seconds to match spec (refresh showing current value)
-    let intervalId = setInterval(() => {
+      function onCheckboxToggle(e) {
+        const isCompleted = completeCheckbox.checked;
+        updateCardCompletion(isCompleted);
+      }
+
+      const editBtn = document.querySelector('[data-testid="test-todo-edit-button"]');
+      const deleteBtn = document.querySelector('[data-testid="test-todo-delete-button"]');
+
+      if (editBtn) {
+        editBtn.addEventListener('click', () => {
+          console.log("You clicked edit");
+          alert("You clicked edit");
+        });
+      }
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+          console.log("delete clicked — remove card");
+          alert("You clicked delete");
+        });
+      }
+
+      setDueDateText();
       updateTimeRemainingDisplay();
-    }, 45000); // 45 seconds => dynamic update
-    
-    // ---- Also recompute on visibility changes? optional
-    // Ensure the time remaining is accurate if page stays open for hours. clean up not necessary for demo.
-    // Additionally we can re-run formatting when due date crossing midnight, but due to setInterval fine.
-    
-    // For extra robustness: call also on page focus
-    window.addEventListener('focus', () => {
-      updateTimeRemainingDisplay();
-    });
-    
-    // optional: update due date text if locale changes (no need)
-    // ensure that due date remains consistent.
-    // The priority badge currently displays Medium, but we also satisfy "Low/Medium/High" - the component shows Medium.
-    // For extra demonstration of correctness: priority can be medium (given above)
-    // But note: requirement must show one of Low, Medium, High. We have Medium. (badge text "⚡ Medium")
-    // to ensure perfect testability, add aria-label already present.
-    
-    // Additionally we add a fallback for refresh on visibility API to avoid unnecessary but great.
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) {
+      completeCheckbox.checked = false;
+      updateCardCompletion(false);
+
+      completeCheckbox.addEventListener('change', onCheckboxToggle);
+
+      let intervalId = setInterval(() => {
         updateTimeRemainingDisplay();
-      }
-    });
-    
-    // Ensure initial display for due date & time remaining correct after 1ms (safety)
-    setTimeout(() => {
-      updateTimeRemainingDisplay();
-    }, 100);
-    
-    // Also simulate cross-check: The time remaining values like "Due in 3 days", "Due tomorrow" will appear depending on the due date (March 1, 2026)
-    // Today is april 10, 2026? Wait NO, the due date set is March 1, 2026. If current date is before March 1, it shows days remaining. If after March 1, shows overdue.
-    // For demonstration, we used future date relative to assignment creation? Actually assignment due check: The due date is March 1, 2026. Depending on current real system date:
-    // For example if today is before March 1 2026 (which may be true if local time earlier than that), then time remaining displays future. If current time after March 1, shows overdue.
-    // That is okay: tests expect reasonable value (± tolerance). Using a fixed due date ensures consistent logic.
-    // To make time remaining "Due in X days" meaningful, but the test system might run at any date. The displayed value will be dynamic but correct based on the due date difference.
-    // In case current date is far past March 1, it will show overdue; still valid and matches required categories (Overdue by X days/hours). Acceptable.
-    
-    // Additional requirement: if checkbox toggle must also update status to "Done". Already done.
-    // The "Time remaining" should still compute regardless of completion. Good.
-    
-    // Accessibility enhancements: checkbox label visible, focus rings, aria-live polite region for time-remaining.
-    // Already applied.
-    // For tags: each tag chip optionally includes data-testid for "work" and "urgent" (exactly as per spec)
-    // We have provided data-testid="test-todo-tag-work" and data-testid="test-todo-tag-urgent".
-    // Also we included extra tag 'Design' (no required testid but still valid)
-    
-    // Ensure the root card uses article, semantic HTML: article, h2, p, time, ul, buttons.
-    // The priority badge includes aria-label for screen readers.
-    // Additionally: for the status badge we use live region not needed but time remaining includes aria-live.
-    // Color contrast meets WCAG AA (background white, dark text, badges have good contrast).
-    // Focus styles visible (outline)
-    // Fully keyboard navigable: tab goes to checkbox, then edit button, then delete button.
-    // Verified because checkbox is an input, buttons are button elements.
-    
-    // Additional housekeeping: if due date changes? Not needed. Dummy values are static.
-    // For responsiveness: card uses flex-wrap, padding and max-width 560px, stack on mobile.
-    // No horizontal overflow.
-    console.log("Todo card ready, time remaining updates every 45 seconds.");
-  })();
-</script>
+      }, 45000);
+
+
+      window.addEventListener('focus', () => {
+        updateTimeRemainingDisplay();
+      });
+
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          updateTimeRemainingDisplay();
+        }
+      });
+
+      setTimeout(() => {
+        updateTimeRemainingDisplay();
+      }, 100);
+      console.log("Todo card ready, time remaining updates every 45 seconds.");
+    })();
+  </script>
 </body>
+
 </html>
