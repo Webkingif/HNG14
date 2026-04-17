@@ -29,11 +29,11 @@ The component includes the following `data-testid` attributes (exactly as specif
 | Twitter link               | `test-user-social-twitter`       |
 | GitHub link                | `test-user-social-github`        |
 | LinkedIn link              | `test-user-social-linkedin`      |
-| Instagram link             | `test-user-social-mastodon`      |
+| Instagram link             | `test-user-social-instagram`      |
 | Hobbies list               | `test-user-hobbies`              |
 | Dislikes list              | `test-user-dislikes`             |
 
-> **Note:** The Instagram link uses `test-user-social-mastodon` to satisfy the requirement for a fourth social network while keeping the attribute name stable for tests.
+
 
 ## 🚀 Live Demo
 
