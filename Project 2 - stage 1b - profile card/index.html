@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Frontend Wizard | Accessible Profile Card</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #eef2f7 0%, #d9e1ec 100%);
+      font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* profile card root container */
+    .profile-card {
+      max-width: 1100px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(0px);
+      border-radius: 2rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 18px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    /* inner layout — grid based, responsive */
+    .card-inner {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    /* avatar + details grid wrapper (desktop side-by-side) */
+    .profile-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Avatar figure styling */
+    .avatar-figure {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .avatar-img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 15px 30px -12px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+      background: #f0f2f5;
+    }
+
+    .avatar-img:hover {
+      transform: scale(1.01);
+    }
+
+    /* right column (details) */
+    .details-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* name styling */
+    .profile-name {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #1F2B3C, #2c3e4e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      border-left: 5px solid #3b82f6;
+      padding-left: 1rem;
+    }
+
+    /* bio paragraph */
+    .profile-bio {
+      color: #2c3e50;
+      font-size: 1rem;
+      line-height: 1.5;
+      background: #f8fafc;
+      padding: 0.9rem 1rem;
+      border-radius: 1.25rem;
+      border-left: 3px solid #3b82f6;
+    }
+
+    /* time container */
+    .time-wrapper {
+      background: #eef2ff;
+      padding: 0.6rem 1rem;
+      border-radius: 2rem;
+      display: inline-flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace, system-ui;
+      font-size: 0.95rem;
+      width: fit-content;
+    }
+
+    .time-label {
+      font-weight: 500;
+      color: #1e293b;
+    }
+
+    .time-value {
+      font-weight: 700;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 0.2rem 0.7rem;
+      border-radius: 2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* social links nav */
+    .social-nav {
+      margin-top: 0.25rem;
+    }
+
+    .social-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f1f5f9;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 500;
+      color: #0f172a;
+      transition: all 0.2s;
+      border: 1px solid #e2e8f0;
+    }
+
+    .social-link:hover {
+      background: #e2e8f0;
+      transform: translateY(-2px);
+      border-color: #94a3b8;
+    }
+
+    .social-link:focus-visible {
+      outline: 3px solid #3b82f6;
+      outline-offset: 2px;
+      background: #e0e7ff;
+    }
+
+    /* hobbies & dislikes double column */
+    .preferences {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .pref-section {
+      flex: 1;
+      min-width: 180px;
+      background: #ffffff;
+      border-radius: 1.25rem;
+      padding: 0.8rem 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      border: 1px solid #eef2ff;
+    }
+
+    .pref-section h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #1e293b;
+      border-left: 3px solid;
+      padding-left: 0.6rem;
+    }
+
+    .hobbies-section h3 {
+      border-left-color: #10b981;
+    }
+
+    .dislikes-section h3 {
+      border-left-color: #ef4444;
+    }
+
+    .pref-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .pref-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      padding: 0.2rem 0;
+      color: #334155;
+    }
+
+    .pref-list li::before {
+      content: "•";
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .dislikes-section .pref-list li::before {
+      content: "✖";
+      color: #ef4444;
+      font-size: 0.8rem;
+    }
+
+    .hobbies-section .pref-list li::before {
+      content: "✓";
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    /* keyboard focus styles for all interactive */
+    a:focus-visible,
+    button:focus-visible,
+    .social-link:focus-visible {
+      outline: 3px solid #2563eb;
+      outline-offset: 3px;
+      border-radius: 40px;
+    }
+
+    /* responsiveness: tablet & desktop grid */
+    @media (min-width: 720px) {
+      .profile-grid {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      .avatar-figure {
+        margin: 0;
+        justify-content: flex-start;
+      }
+
+      .avatar-img {
+        width: 180px;
+        height: 180px;
+      }
+
+      .card-inner {
+        padding: 2rem 2.2rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .profile-card {
+        margin: 1rem;
+      }
+
+      .avatar-img {
+        width: 200px;
+        height: 200px;
+      }
+
+      .preferences {
+        flex-wrap: nowrap;
+      }
+    }
+
+    /* mobile first: extra small screens */
+    @media (max-width: 480px) {
+      .card-inner {
+        padding: 1.25rem;
+      }
+
+      .profile-name {
+        font-size: 1.6rem;
+      }
+
+      .social-link {
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .time-value {
+        font-size: 0.75rem;
+        word-break: break-all;
+      }
+
+      .pref-section {
+        min-width: 100%;
+      }
+    }
+
+    /* hover transitions, accessibility */
+    /* .profile-card *:focus {
+      outline: none;
+    } */
+
+    /* ensure text contrast WCAG AA */
+    body,
+    .profile-bio,
+    .pref-list li,
+    .time-label,
+    .social-link {
+      color: #1e293b;
+    }
+
+    .profile-bio {
+      background: #f8fafc;
+    }
+
+    .time-wrapper {
+      background: #e6edfc;
+    }
+  </style>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  
+
+</head>
+
+<body>
+
+  <article class="profile-card" data-testid="test-profile-card">
+    <div class="card-inner">
+      <div class="profile-grid">
+        <!-- Avatar with semantic figure and accessible alt -->
+        <figure class="avatar-figure">
+          <img class="avatar-img" data-testid="test-user-avatar" src="https://randomuser.me/api/portraits/women/68.jpg"
+            alt="Portrait of Idowu femi, profile avatar with short dark hair and a friendly smile" loading="eager"
+            width="200" height="200">
+          <!-- figcaption for extra semantics but visually hidden? not mandatory but improves structure -->
+          <figcaption style="display: none;">User profile avatar</figcaption>
+        </figure>
+
+        <!-- right column: name, bio, time, social, hobbies/dislikes -->
+        <div class="details-column">
+          <!-- Name inside header semantic -->
+          <header>
+            <h2 class="profile-name" data-testid="test-user-name">Idowu Oluwafemi</h2>
+          </header>
+
+          <!-- Short bio paragraph -->
+          <p class="profile-bio" data-testid="test-user-bio"> <i class="fa-solid fa-star" style="color: orange; "></i>
+            Frontend architect & accessibility advocate. I craft inclusive, high-performance web experiences.
+            Open source contributor, design systems enthusiast, and coffee-fueled creator.
+          </p>
+
+          <!-- Current epoch time in ms with aria-live for dynamic updates (screen reader announcement) -->
+          <div class="time-wrapper">
+            <span class="time-label"> <i class="fa-solid fa-clock" style="color: black;"></i>
+              Epoch time (ms):</span>
+            <span class="time-value" data-testid="test-user-time" aria-live="polite" id="liveEpochTime"></span>
+            <span class="time-label">ms</span>
+          </div>
+
+          <!-- SOCIAL LINKS SECTION: semantic nav + list, each link has custom testid -->
+          <nav class="social-nav" aria-label="Social media profiles" data-testid="test-user-social-links">
+            <ul class="social-list">
+              <li>
+                <a data-testid="test-user-social-twitter" href="https://twitter.com/frontendwizard" target="_blank"
+                  rel="noopener noreferrer" class="social-link">
+                  <i class="fa-brands fa-twitter" style="color: blue;"></i> Twitter
+                </a>
+              </li>
+              <li>
+                <a data-testid="test-user-social-github" href="https://github.com/idowufemi-dev" target="_blank"
+                  rel="noopener noreferrer" class="social-link">
+                  <i class="fa-brands fa-github" style="color: black;"></i> GitHub
+                </a>
+              </li>
+              <li>
+                <a data-testid="test-user-social-linkedin" href="https://linkedin.com/in/idowufemi-accessibility"
+                  target="_blank" rel="noopener noreferrer" class="social-link">
+                  <i class="fa-brands fa-linkedin" style="color: blue;"></i> LinkedIn
+                </a>
+              </li>
+              <li>
+                <a data-testid="test-user-social-mastodon" href="https://instagram.com/idowufemi" target="_blank"
+                  rel="noopener noreferrer" class="social-link">
+                  <i class="fa-brands fa-instagram" style="color: red;"></i> Instagram
+                </a>
+              </li>
+            </ul>
+          </nav>
+
+          <!-- Hobbies & Dislikes (two distinct lists, semantic sections) -->
+          <div class="preferences">
+            <!-- HOBBIES section -->
+            <section class="pref-section hobbies-section">
+              <h3><i class="fa-solid fa-heart" style="color: red;"></i> Hobbies & interests</h3>
+              <ul class="pref-list" data-testid="test-user-hobbies">
+                <li>Open source contribution</li>
+                <li>Typography & CSS art</li>
+                <li>Rock climbing & hiking</li>
+                <li>Web performance tuning</li>
+              </ul>
+            </section>
+
+            <!-- DISLIKES section -->
+            <section class="pref-section dislikes-section">
+              <h3><i class="fa-solid fa-ban" style="color: red;"></i> Dislikes</h3>
+              <ul class="pref-list" data-testid="test-user-dislikes">
+                <li>Inaccessible overlays</li>
+                <li>Excessive modals</li>
+                <li>Slow 3G & heavy bundles</li>
+                <li>Missing alt attributes</li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <script>
+    (function () {
+
+      const timeElement = document.querySelector('[data-testid="test-user-time"]');
+
+      if (!timeElement) {
+        console.warn("Time element not found, but will still attempt dynamic updates.");
+        return;
+      }
+
+      // function to update epoch milliseconds
+      function updateEpochTime() {
+        if (timeElement) {
+          const now = Date.now();
+
+          timeElement.textContent = now;
+
+        }
+      }
+
+      // set initial value immediately
+      updateEpochTime();
+
+
+      const intervalId = setInterval(updateEpochTime, 500);
+
+
+      window.addEventListener('beforeunload', function () {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      });
+
+    })();
+  </script>
+
+</body>
+
+</html>
