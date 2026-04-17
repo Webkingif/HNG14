@@ -56,8 +56,10 @@
 
     /* focus styles - WCAG visible outline */
     button:focus-visible,
-    input[type="checkbox"]:focus-visible,
+    input:focus-visible,
     .edit-btn:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
     .delete-btn:focus-visible {
       outline: 3px solid #1e6fdf;
       outline-offset: 3px;
@@ -79,6 +81,8 @@
       align-items: center;
       gap: 0.75rem;
       flex-wrap: wrap;
+      max-width: 100%;
+      word-wrap: break-word;
     }
 
     .todo-title {
@@ -333,7 +337,144 @@
         font-size: 1.4rem;
       }
     }
+
+
+
+    /* editformcss */
+    #edit-form-div {
+      flex-direction: column;
+      /* display: none; */
+    }
+
+    #edit-form-description {
+      height: 5rem;
+    }
+
+    #edit-form-priority {
+      height: 2rem;
+      width: 7rem;
+
+    }
+
+    #for-overdue {
+      color: rgb(180, 0, 0);
+      background-color: lightcoral;
+    }
+
+    .edit-form-inputs {
+      width: 100%;
+      border-radius: 0.9rem;
+      min-height: 2rem;
+      padding: 0 1rem;
+
+    }
+
+
+    .edit-input-div {
+      margin-bottom: 0.5rem;
+    }
+
+    .edit-mode-heading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .edit-save-cancel {
+      padding: 0.5rem 2rem;
+      margin: 0 1rem;
+    }
+
+    .edit-save-cancel:hover {
+      opacity: 0.5;
+    }
+
+    .edit-form-save-btn {
+      background-color: rgb(6, 153, 153);
+      color: white;
+    }
+
+    .edit-form-inputs {
+      margin-top: 0.4rem;
+    }
+
+    .edit-form-bottom-btn {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .edit-form-cancel-btn {
+      background-color: rgb(139, 129, 129);
+      color: white;
+    }
+
+
+
+    /* display div container */
+
+    #status-select {
+      padding: 0.5rem 0.8rem;
+      border-radius: 2rem;
+    }
+
+    .status-select-label {
+      font-weight: 600;
+    }
+
+    .medium-orange {
+      border-left: 1rem solid orange;
+    }
+
+
+    .low-green {
+      border-left: 1rem solid green;
+    }
+
+    .high-red {
+      border-left: 1rem solid red;
+    }
+
+    .completed {
+      opacity: 0.5;
+    }
+
+    #todo-title-text {
+      max-width: 100%;
+    }
+
+    /* collapse and expand */
+
+    #text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* Collapsed: show only 2 lines */
+    .collapsed {
+      -webkit-line-clamp: 2;
+      word-wrap: break-word;
+      width: 100%;
+    }
+
+    /* Expanded: show everything */
+    .expanded {
+      -webkit-line-clamp: unset;
+    }
+
+    #toggleBtn {
+      background-color: lightskyblue;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.7rem;
+      margin-left: auto;
+    }
+
+    .toggleBtndiv {
+      display: flex;
+    }
   </style>
+  <!-- <link rel="stylesheet" href="editForm.css"> -->
 </head>
 
 <body>
@@ -341,64 +482,134 @@
 
     <article class="todo-card" data-testid="test-todo-card" role="region" aria-label="Todo task card">
       <!-- header: title + priority badge -->
-      <div class="card-header">
-        <div class="title-wrapper">
-          <h2 class="todo-title" id="todo-title-text" data-testid="test-todo-title">Design System Research</h2>
+
+      <!-- This container is for the display content only -->
+      <div id="display-container-div">
+        <div class="card-header">
+          <div class="title-wrapper">
+            <h2 class="todo-title" id="todo-title-text" data-testid="test-todo-title">Design System Research</h2>
+          </div>
+          <div data-testid="test-todo-priority-indicator" class="priority-badge priority-medium" id="priorityBadge"
+            aria-label="Priority level">
+            <span data-testid="test-todo-priority"> Medium</span>
+          </div>
         </div>
-        <div data-testid="test-todo-priority" class="priority-badge priority-medium" id="priorityBadge"
-          aria-label="Priority level: Medium">
-          <span> Medium</span>
+        <!-- Checkbox for completion toggle -->
+        <div class="checkbox-row">
+          <label class="checkbox-label" for="completeToggle">
+            <input type="checkbox" id="completeToggle" data-testid="test-todo-complete-toggle"
+              aria-describedby="todo-title-text" />
+            <span>Mark as completed</span>
+          </label>
+        </div>
+        <!-- status control -->
+
+        <div class="status-section-control">
+          <label for="status-select" class="status-select-label">Change status:</label>
+          <select name="" id="status-select" data-testid="test-todo-status-control">
+            <option value="Pending">Pending</option>
+            <option value="In progress">In progress</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+
+        <!-- Description paragraph -->
+        <div data-testid="test-todo-description">
+          <p class="todo-description collapsed" data-testid="test-todo-collapsible-section" id="text">
+            Analyze component libraries, gather accessibility insights, and prepare draft for the new design tokens.
+
+          </p>
+        </div>
+        <div class="toggleBtndiv">
+          <button id="toggleBtn" data-testid="test-todo-expand-toggle" aria-expanded="false" aria-controls="text">Read
+            more</button>
+
+        </div>
+
+        <!-- Due date & time remaining & status row -->
+        <div class="meta-grid">
+          <div class="due-block">
+            <span class="due-label">Due:</span>
+            <!-- time element with datetime attribute -->
+            <time datetime="2026-03-01T18:00:00+00:00" data-testid="test-todo-due-date" id="dueDateElem">March 1, 2026,
+              6:00 PM UTC</time>
+          </div>
+          <div>
+            <span class="status-badge" id="statusBadge" data-testid="test-todo-status"> Pending</span>
+          </div>
+          <div>
+            <!-- time remaining container with live polite announcement (optional live region) -->
+            <span class="time-remaining-box" id="timeRemainingBox" data-testid="test-todo-time-remaining"
+              aria-live="polite">
+              Calculating...
+            </span>
+          </div>
+          <div>
+            <span id="for-overdue" class="status-badge" data-testid="test-todo-overdue-indicator">Overdue</span>
+          </div>
+        </div>
+
+
+
+        <!-- Tags / categories list (chips) -->
+        <div class="tags-section">
+          <div class="tags-title" id="tagsLabel">Categories & Tags</div>
+          <ul class="tag-list" role="list" aria-labelledby="tagsLabel" data-testid="test-todo-tags">
+            <li class="tag-chip" data-testid="test-todo-tag-work"> Work</li>
+            <li class="tag-chip" data-testid="test-todo-tag-urgent"> Urgent</li>
+            <li class="tag-chip"> Design</li>
+          </ul>
+        </div>
+
+
+
+        <!-- Edit & Delete Buttons -->
+        <div class="action-buttons">
+          <button class="edit-btn" data-testid="test-todo-edit-button" aria-label="Edit task"> Edit</button>
+          <button class="delete-btn" data-testid="test-todo-delete-button" aria-label="Delete task"> Delete</button>
         </div>
       </div>
 
-      <!-- Description paragraph -->
-      <p class="todo-description" data-testid="test-todo-description">
-        Analyze component libraries, gather accessibility insights, and prepare draft for the new design tokens.
-      </p>
-
-      <!-- Due date & time remaining & status row -->
-      <div class="meta-grid">
-        <div class="due-block">
-          <span class="due-label">Due:</span>
-          <!-- time element with datetime attribute -->
-          <time datetime="2026-03-01T18:00:00+00:00" data-testid="test-todo-due-date" id="dueDateElem">March 1, 2026,
-            6:00 PM UTC</time>
+      <!-- The below div is for the edit form -->
+      <div id="edit-form-div" data-testid="test-todo-edit-form">
+        <div class="edit-mode-heading">
+          <h2>Edit Mode</h2>
         </div>
-        <div>
-          <span class="status-badge" id="statusBadge" data-testid="test-todo-status"> In Progress</span>
+        <div class="edit-input-div">
+          <label for="edit-title-input">
+            Title:
+          </label>
+          <input type="text" id="edit-title-input" class="edit-form-inputs" data-testid="test-todo-edit-title-input">
         </div>
-        <div>
-          <!-- time remaining container with live polite announcement (optional live region) -->
-          <span class="time-remaining-box" id="timeRemainingBox" data-testid="test-todo-time-remaining"
-            aria-live="polite">
-            Calculating...
-          </span>
+        <div class="edit-input-div">
+          <label for="edit-form-description">Description:</label>
+          <textarea id="edit-form-description" data-testid="test-todo-edit-description-input" rows="3"
+            class="edit-form-inputs"></textarea>
         </div>
-      </div>
-
-      <!-- Tags / categories list (chips) -->
-      <div class="tags-section">
-        <div class="tags-title" id="tagsLabel">Categories & Tags</div>
-        <ul class="tag-list" role="list" aria-labelledby="tagsLabel" data-testid="test-todo-tags">
-          <li class="tag-chip" data-testid="test-todo-tag-work"> Work</li>
-          <li class="tag-chip" data-testid="test-todo-tag-urgent"> Urgent</li>
-          <li class="tag-chip"> Design</li>
-        </ul>
-      </div>
-
-      <!-- Checkbox for completion toggle -->
-      <div class="checkbox-row">
-        <label class="checkbox-label" for="completeToggle">
-          <input type="checkbox" id="completeToggle" data-testid="test-todo-complete-toggle"
-            aria-describedby="todo-title-text" />
-          <span>Mark as completed</span>
-        </label>
-      </div>
-
-      <!-- Edit & Delete Buttons -->
-      <div class="action-buttons">
-        <button class="edit-btn" data-testid="test-todo-edit-button" aria-label="Edit task"> Edit</button>
-        <button class="delete-btn" data-testid="test-todo-delete-button" aria-label="Delete task"> Delete</button>
+        <div class="edit-input-div">
+          <label for="edit-form-priority">Priority:</label>
+          <select name="priority" id="edit-form-priority" data-testid="test-todo-edit-priority-select"
+            class="edit-form-inputs">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div class="edit-input-div">
+          <label for="edit-form-date">
+            Due date & time
+          </label>
+          <input data-testid="test-todo-edit-due-date-input" type="datetime-local" name="date" id="edit-form-date"
+            class="edit-form-inputs">
+        </div>
+        <div class="edit-form-bottom-btn">
+          <button class="edit-form-save-btn edit-save-cancel" data-testid="test-todo-save-button">
+            Save
+          </button>
+          <button data-testid="test-todo-cancel-button" class="edit-form-cancel-btn edit-save-cancel">
+            Cancel
+          </button>
+        </div>
       </div>
     </article>
   </div>
@@ -413,18 +624,89 @@
       const timeRemainingSpan = document.getElementById('timeRemainingBox');
       const statusBadge = document.getElementById('statusBadge');
       const todoTitleElem = document.querySelector('[data-testid="test-todo-title"]');
+      const todoDescription = document.querySelector(".todo-description");
       const priorityBadge = document.getElementById('priorityBadge');
       const completeCheckbox = document.getElementById('completeToggle');
+      const statusSelect = document.getElementById("status-select");
+      const overdueTag = document.getElementById("for-overdue")
+      // added for edit mode
+      const displayContainerDiv = document.getElementById("display-container-div");
+      const editFormDiv = document.getElementById("edit-form-div");
+      const editFormCancel = document.querySelector(".edit-form-cancel-btn");
+
+      const saveBtn = document.querySelector(".edit-form-save-btn");
+
+      const editBtn = document.querySelector('[data-testid="test-todo-edit-button"]');
+      const deleteBtn = document.querySelector('[data-testid="test-todo-delete-button"]');
 
 
-      function formatDueDate() {
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
-        return dueDateUTC.toLocaleDateString(undefined, options);
+      let intervalId;
+      let state = {
+        title: "Design System Research",
+        description: "Analyze component libraries, gather accessibility insights, and prepare draft for the new design tokens.",
+        priority: "Medium",      // Low, Medium, High
+        dueDateUTC: "2026-03-01T18:00:00Z",  // ISO string UTC
+        status: "Pending",   // Pending, In Progress, Done
+        completed: false         // derived from checkbox / status sync
+      };
+
+      let editModeActive = false;
+      // setting edit form to none by default
+      function toggleEditMode(isFirstTime = false) {
+        if (!editModeActive) {
+          editFormDiv.style.display = "none";
+          displayContainerDiv.style.display = "block";
+          if (!isFirstTime) {
+            editBtn.focus();
+          }
+
+
+
+        } else {
+          displayContainerDiv.style.display = "none"
+          editFormDiv.style.display = "flex";
+        }
+        editModeActive = !editModeActive;
       }
+      toggleEditMode(true)
+
+      // edit form inputs 
+      const editTitleInput = document.getElementById("edit-title-input");
+      const editDescriptionInput = document.getElementById("edit-form-description");
+      const priorityInput = document.getElementById("edit-form-priority");
+      const dateInput = document.getElementById("edit-form-date");
+
+
+      // priority color
+      const todoCard = document.querySelector(".todo-card");
+
+      function priorityStyles() {
+        if (state.priority == "Medium") {
+
+          todoCard.classList.add("medium-orange")
+          todoCard.classList.remove("low-green")
+          todoCard.classList.remove("high-red")
+        } else if (state.priority == "Low") {
+          console.log("ddj")
+          todoCard.classList.remove("medium-orange")
+          todoCard.classList.add("low-green")
+          todoCard.classList.remove("high-red")
+        } else {
+          todoCard.classList.remove("medium-orange")
+          todoCard.classList.remove("low-green")
+          todoCard.classList.add("high-red")
+        }
+      }
+      priorityStyles()
+
+      // function formatDueDate() {
+      //   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' };
+      //   return state.dueDateUTC.toLocaleDateString(undefined, options);
+      // }
 
       function computeTimeRemaining() {
         const now = new Date();
-        const due = new Date(dueDateUTC);
+        const due = new Date(state.dueDateUTC);
         const diffMs = due - now;
         const isOverdue = diffMs < 0;
         const absDiff = Math.abs(diffMs);
@@ -473,7 +755,7 @@
 
       function setDueDateText() {
         if (dueDateElem) {
-          dueDateElem.textContent = formatDueDate();
+          dueDateElem.textContent = formatDueDate(state.dueDateUTC);
         }
       }
 
@@ -482,34 +764,99 @@
         if (todoTitleElem) {
           if (isChecked) {
             todoTitleElem.classList.add('completed-title');
+            statusSelect.value = "Done";
+            state.status = "Done";
+            todoCard.classList.add("completed");
+
+            if (intervalId) {
+              console.log(intervalId)
+              clearInterval(intervalId);
+            }
+
           } else {
             todoTitleElem.classList.remove('completed-title');
+            statusSelect.value = "Pending";
+            state.status = "Pending";
+            todoCard.classList.remove("completed")
+            intervalId = setInterval(() => {
+              updateTimeRemainingDisplay();
+            }, 45000);
+            console.log(intervalId)
+
           }
         }
         if (statusBadge) {
           if (isChecked) {
             statusBadge.innerHTML = ' Done';
             statusBadge.classList.add('status-done');
+            timeRemainingSpan.textContent = "Completed";
+            timeRemainingSpan.style.color = "green"
           } else {
-            statusBadge.innerHTML = ' In Progress';
+            statusBadge.innerHTML = 'Pending';
             statusBadge.classList.remove('status-done');
+            // timeRemainingSpan.style.display = "block";
+            timeRemainingSpan.style.color = "black"
+            updateTimeRemainingDisplay()
+
+
           }
         }
 
       }
+      // overdue logic
+      function toggleOverdue() {
+        const now = new Date();
+        const due = new Date(state.dueDateUTC);
+        const diffMs = due - now;
+        const isOverdue = diffMs < 0;
+        if (isOverdue) {
+          overdueTag.style.display = "block";
+        } else {
+          overdueTag.style.display = "none"
+        }
+      }
+      toggleOverdue()
 
       function onCheckboxToggle(e) {
         const isCompleted = completeCheckbox.checked;
         updateCardCompletion(isCompleted);
       }
 
-      const editBtn = document.querySelector('[data-testid="test-todo-edit-button"]');
-      const deleteBtn = document.querySelector('[data-testid="test-todo-delete-button"]');
+
+      // helper: convert UTC iso to local datetime-local string
+      function utcToLocalDatetimeLocal(isoString) {
+        const d = new Date(isoString);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const hours = String(d.getHours()).padStart(2, '0');
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+
+      // local datetime to UTC ISO string (assumes user local)
+      function localDatetimeToUTC(localValue) {
+        if (!localValue) return new Date().toISOString();
+        const localDate = new Date(localValue);
+        return localDate.toISOString();
+      }
+
+      // format due date for display
+      function formatDueDate(isoUTC) {
+        const d = new Date(isoUTC);
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      }
 
       if (editBtn) {
         editBtn.addEventListener('click', () => {
+          toggleEditMode();
+          editTitleInput.value = state.title;
+          editDescriptionInput.value = state.description;
+          priorityInput.value = state.priority;
+          const localvalue = utcToLocalDatetimeLocal(state.dueDateUTC)
+          dateInput.value = localvalue;
+          console.log(localvalue)
           console.log("You clicked edit");
-          alert("You clicked edit");
         });
       }
       if (deleteBtn) {
@@ -525,8 +872,70 @@
       updateCardCompletion(false);
 
       completeCheckbox.addEventListener('change', onCheckboxToggle);
+      // for when a new option is selected in the select dropdown
+      statusSelect.addEventListener("change", (e) => {
+        if (e.target.value == "Done") {
+          updateCardCompletion(true);
+          completeCheckbox.checked = true;
+          state.status = "Done"
+          todoCard.classList.add("completed");
+          // console.log(intervalId)
+          // clearInterval(intervalId)
 
-      let intervalId = setInterval(() => {
+
+        } else {
+          completeCheckbox.checked = false;
+          todoCard.classList.remove("completed")
+          statusBadge.innerHTML = e.target.value;
+          state.status = e.target.value;
+          todoTitleElem.classList.remove('completed-title');
+          statusBadge.classList.remove('status-done');
+          // timeRemainingSpan.style.display = "block";
+          updateTimeRemainingDisplay()
+          timeRemainingSpan.style.color = "black";
+          intervalId = setInterval(() => {
+            updateTimeRemainingDisplay();
+          }, 45000);
+          console.log(intervalId)
+
+        }
+      })
+
+      saveBtn.addEventListener("click", () => {
+        state.title = editTitleInput.value;
+        state.description = editDescriptionInput.value;
+        state.dueDateUTC = localDatetimeToUTC(dateInput.value);
+        state.priority = priorityInput.value;
+        console.log(state.dueDateUTC)
+
+
+        todoTitleElem.innerHTML = state.title;
+        todoDescription.innerHTML = state.description;
+        dueDateElem.innerHTML = formatDueDate(dateInput.value);
+        priorityBadge.innerHTML = state.priority;
+        if (state.priority == "High") {
+          priorityBadge.style.backgroundColor = "lightcoral"
+          priorityBadge.style.color = "darkred";
+          priorityBadge.style.borderLeft = "3px solid red";
+        } else if (state.priority == "Low") {
+          priorityBadge.style.backgroundColor = "lightgreen"
+          priorityBadge.style.color = "green";
+          priorityBadge.style.borderLeft = "3px solid green";
+        } else {
+          priorityBadge.style.backgroundColor = "#fff0db"
+          priorityBadge.style.color = "#c96f0e";
+          priorityBadge.style.borderLeft = "3px solid #f4a261";
+        }
+        toggleEditMode()
+        priorityStyles()
+        state.status = "Pending";
+        statusBadge.innerHTML = state.status;
+        statusSelect.value = state.status;
+        updateTimeRemainingDisplay()
+        toggleOverdue();
+      })
+
+      intervalId = setInterval(() => {
         updateTimeRemainingDisplay();
       }, 45000);
 
@@ -546,6 +955,29 @@
         updateTimeRemainingDisplay();
       }, 100);
       console.log("Todo card ready, time remaining updates every 45 seconds.");
+
+
+      // Edit mode code starts here
+
+      editFormCancel.addEventListener("click", () => {
+        toggleEditMode();
+      })
+
+
+      // collapse and expand
+      const text = document.getElementById("text");
+      const btn = document.getElementById("toggleBtn");
+      btn.addEventListener("click", () => {
+        // const isCollapsed = text.classList.contains("collapsed");
+        const isExpanded = btn.getAttribute("aria-expanded") === "true";
+        btn.setAttribute("aria-expanded", String(!isExpanded));
+
+        text.classList.toggle("collapsed");
+        text.classList.toggle("expanded");
+
+        btn.textContent = isExpanded ? "Read more" : "Read less";
+      });
+
     })();
   </script>
 </body>
